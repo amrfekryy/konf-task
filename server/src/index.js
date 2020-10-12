@@ -2,11 +2,10 @@ const { ApolloServer } = require('apollo-server');
 
 const typeDefs = require('./schema');
 // const resolvers = require('./resolvers');
-// const { createStore } = require('./utils');
-
 // const GeneralAPI = require('./datasources/general');
 
-// const store = createStore();
+const { createStore } = require('./utils');
+const store = createStore();
 
 const server = new ApolloServer({
   typeDefs,
