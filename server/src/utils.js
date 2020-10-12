@@ -3,12 +3,9 @@ const SQL = require('sequelize')
 module.exports.createStore = () => {
   
   // database configuration
-  const Op = SQL.Op;
-  const operatorsAliases = { $in: Op.in };
   const db = new SQL('database', 'username', 'password', {
     dialect: 'sqlite',
     storage: './store.sqlite',
-    operatorsAliases,
     logging: false,
   });
   

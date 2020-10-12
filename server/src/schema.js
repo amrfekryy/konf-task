@@ -11,8 +11,8 @@ const typeDefs = gql`
   }
 
   type Query {
-    getItems: [Item]!
-    getItem: Item!
+    getItems: Response!
+    getItem(id: ID!): Response!
   }
   
   type Mutation {
