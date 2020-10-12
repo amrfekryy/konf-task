@@ -8,5 +8,11 @@
     "start": "nodemon src/index.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.18.2",
+    "graphql": "^15.3.0",
+    "sequelize": "^6.3.5",
+    "sqlite3": "^5.0.0"
+  }
 }
