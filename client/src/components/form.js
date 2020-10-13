@@ -1,11 +1,36 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
+import { ADD_ITEM } from 'helpers/queries'
+import { useMutation } from '@apollo/client'
 
-export default function Menu(props) {
+import { useNavigate } from "@reach/router"
+import { client } from 'index'
+
+
+const Field = props => (
+  <Form.Group as={Row}>
+    <Form.Label column sm="2" lg="1">{props.label}</Form.Label>
+    <Col md="6" lg="4">
+      {props.children}
+    </Col>
+  </Form.Group>
+)
+
+
+function FormControl(props) {
+  const [type, setType] = useState('Main Course')
+  const [name, setName] = useState('')
+  const [price, setPrice] = useState(0)
+
+  const handleSubmit = () => {
+    alert(JSON.stringify({type, name, price}))
+    props.triggerMutation({variables: {type, name, price: +price}})
+  }
+
   return (
     <Container>
       <div style={{
@@ -18,47 +43,58 @@ export default function Menu(props) {
       </div>
 
       <Form>
-        <Form.Group as={Row}>
-          <Form.Label column sm="2" lg="1">Type</Form.Label>
-          <Col md="6" lg="4">
-            <Form.Control as="select">
-              <option>Main Course</option>
-              <option>Side</option>
-            </Form.Control>
-          </Col>
-        </Form.Group>
+        <Field label='Type'>
+          <Form.Control as="select" onChange={e => setType(e.target.value)}>
+            <option>Main Course</option>
+            <option>Side</option>
+          </Form.Control>
+        </Field>
 
+        <Field label='Name'>
+          <Form.Control required type="text" onChange={e => setName(e.target.value)}/>
+        </Field>
 
-        <Form.Group as={Row}>
-          <Form.Label column sm="2" lg="1">Name</Form.Label>
-          <Col md="6" lg="4">
-            <Form.Control type="text" />
-          </Col>
-        </Form.Group>
+        <Field label='Price'>
+          <Form.Control required type="number" onChange={e => setPrice(e.target.value)}/>
+        </Field>
 
-        <Form.Group as={Row}>
-          <Form.Label column sm="2" lg="1">Price</Form.Label>
-          <Col md="6" lg="4">
-            <Form.Control type="text" />
-          </Col>
-        </Form.Group>
+        <Field label='Photo'>
+          <label className="btn btn-primary">
+            <Form.File className="d-none"/>
+            Choose Photo
+          </label>
+        </Field>
 
-        <Form.Group as={Row}>
-          <Form.Label column sm="2" lg="1">Photo</Form.Label>
-          <Col md="6" lg="4">
-            <label className="btn btn-primary">
-              <Form.File className="d-none"/>
-              Choose Photo
-            </label>
-          </Col>
-        </Form.Group>
-
-
-        <Button variant="primary" type="submit">
-          Save Item
-        </Button>
-
+        <Button variant="primary" type="submit" 
+          onClick={e => {e.preventDefault(); handleSubmit();}}
+        >Save Item</Button>
       </Form>
     </Container>
   );
+}
+
+
+export default (props) => {
+
+  const navigate = useNavigate()
+
+  const complete = {
+    addItem: () => {
+      client.resetStore()
+      navigate('/')
+      // message.success(settings.success_message, 2)
+    },
+  }
+
+  const [triggerMutation, { data, loading, error }] = useMutation(ADD_ITEM, {
+    onCompleted(data) {
+      if (data['addItem'] && data['addItem'].success)
+        complete['addItem'](data)
+      else alert(JSON.stringify(data));
+      // alert(JSON.stringify(data, null, 2));
+    }
+  });
+  // if (loading) // do something
+  // if (error) return message.error(error.message, 2);
+  return <FormControl {...{triggerMutation}} />
 }
