@@ -29,16 +29,16 @@ export default function ItemCard(props) {
           flexDirection: 'row',          
           justifyContent: 'center',
         }}>
-          {/* <Link to='/form' state={{ item }} style={{color: 'green'}}>
-            Update
-          </Link> */}
-          <Card.Link as={Link} to='/form' state={{ item }} style={{color: 'green'}}>Update</Card.Link>
+        
+          <Card.Link as={Link} to='/form' state={{ item }} 
+            style={{color: 'green'}}>Update</Card.Link>
+          
           <Card.Link href="" style={{color: 'red'}}
             onClick={e => {
               e.preventDefault()
               if (window.confirm("Are you sure?")) deleteItem({variables: {id}})
-            }} 
-          >Delete</Card.Link>
+            }}>Delete</Card.Link>
+        
         </div>
       </Card.Body>
     </Card>
