@@ -4,12 +4,7 @@ import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
-import { ADD_ITEM } from 'helpers/queries'
-import { useMutation } from '@apollo/client'
-
-import { useNavigate } from "@reach/router"
-import { client } from 'index'
-
+import useMutator from 'components/mutator'
 
 const Field = props => (
   <Form.Group as={Row}>
@@ -20,15 +15,15 @@ const Field = props => (
   </Form.Group>
 )
 
-
-function FormControl(props) {
+export default function FormControl(props) {
   const [type, setType] = useState('Main Course')
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
+  const triggerMutation = useMutator('addItem')
 
   const handleSubmit = () => {
     alert(JSON.stringify({type, name, price}))
-    props.triggerMutation({variables: {type, name, price: +price}})
+    triggerMutation({variables: {type, name, price: +price}})
   }
 
   return (
@@ -71,30 +66,4 @@ function FormControl(props) {
       </Form>
     </Container>
   );
-}
-
-
-export default (props) => {
-
-  const navigate = useNavigate()
-
-  const complete = {
-    addItem: () => {
-      client.resetStore()
-      navigate('/')
-      // message.success(settings.success_message, 2)
-    },
-  }
-
-  const [triggerMutation, { data, loading, error }] = useMutation(ADD_ITEM, {
-    onCompleted(data) {
-      if (data['addItem'] && data['addItem'].success)
-        complete['addItem'](data)
-      else alert(JSON.stringify(data));
-      // alert(JSON.stringify(data, null, 2));
-    }
-  });
-  // if (loading) // do something
-  // if (error) return message.error(error.message, 2);
-  return <FormControl {...{triggerMutation}} />
 }
