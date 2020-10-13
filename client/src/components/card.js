@@ -1,10 +1,13 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card'
 import Blank from 'assets/blank.png'
+import useMutator from 'components/mutator'
 
 export default function ItemCard(props) {
 
-  const { type, name, price, photo } = props.item
+  const deleteItem = useMutator('deleteItem')
+
+  const { id, type, name, price, photo } = props.item
 
   return (
     <Card>
@@ -24,8 +27,13 @@ export default function ItemCard(props) {
           flexDirection: 'row',          
           justifyContent: 'center',
         }}>
-          <Card.Link href="#" style={{color: 'green'}}>Update</Card.Link>
-          <Card.Link href="#" style={{color: 'red'}}>Delete</Card.Link>
+          <Card.Link href="" style={{color: 'green'}}>Update</Card.Link>
+          <Card.Link href="" style={{color: 'red'}}
+            onClick={e => {
+              e.preventDefault()
+              if (window.confirm("Are you sure?")) deleteItem({variables: {id}})
+            }} 
+          >Delete</Card.Link>
         </div>
       </Card.Body>
     </Card>
