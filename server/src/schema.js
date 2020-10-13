@@ -26,10 +26,10 @@ const typeDefs = gql`
     
     updateItem(
       id: ID!
-      name: String!
-      type: String!
-      price: Float!
-      photo: String!
+      name: String
+      type: String
+      price: Float
+      photo: String
     ): Response!
 
     deleteItem(id: ID!): Response!

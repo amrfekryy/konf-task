@@ -2,12 +2,14 @@ import React from 'react';
 import Card from 'react-bootstrap/Card'
 import Blank from 'assets/blank.png'
 import useMutator from 'components/mutator'
+import { Link } from '@reach/router';
 
 export default function ItemCard(props) {
 
   const deleteItem = useMutator('deleteItem')
 
-  const { id, type, name, price, photo } = props.item
+  const item = props.item || {}
+  const { id, type, name, price, photo } = item
 
   return (
     <Card>
@@ -27,7 +29,10 @@ export default function ItemCard(props) {
           flexDirection: 'row',          
           justifyContent: 'center',
         }}>
-          <Card.Link href="" style={{color: 'green'}}>Update</Card.Link>
+          {/* <Link to='/form' state={{ item }} style={{color: 'green'}}>
+            Update
+          </Link> */}
+          <Card.Link as={Link} to='/form' state={{ item }} style={{color: 'green'}}>Update</Card.Link>
           <Card.Link href="" style={{color: 'red'}}
             onClick={e => {
               e.preventDefault()

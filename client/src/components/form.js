@@ -16,14 +16,33 @@ const Field = props => (
 )
 
 export default function FormControl(props) {
-  const [type, setType] = useState('Main Course')
-  const [name, setName] = useState('')
-  const [price, setPrice] = useState(0)
-  const triggerMutation = useMutator('addItem')
+  
+  const item = 
+    props.location && 
+    props.location.state &&
+    props.location.state.item
+    ? props.location.state.item : null
+  
+  const action = item ? 'Update' : 'Add'
+
+  const { id, 
+    type: TYPE='Main Course', 
+    name: NAME='', 
+    price: PRICE='', 
+    photo } = item || {}
+
+  // alert(JSON.stringify(item))
+  const [type, setType] = useState(TYPE)
+  const [name, setName] = useState(NAME)
+  const [price, setPrice] = useState(PRICE)
+
+  const addItem = useMutator('addItem')
+  const updateItem = useMutator('updateItem')
 
   const handleSubmit = () => {
-    alert(JSON.stringify({type, name, price}))
-    triggerMutation({variables: {type, name, price: +price}})
+    // alert(JSON.stringify({type, name, price}))
+    if (action === 'Update') updateItem({variables: {id, type, name, price: +price}})
+    else addItem({variables: {type, name, price: +price}})
   }
 
   return (
@@ -34,23 +53,26 @@ export default function FormControl(props) {
         justifyContent: 'space-between',
         margin: '3rem 0 2rem 0'
       }}>
-        <h4>Add Menu Item</h4>
+        <h4>{`${action} Menu Item`}</h4>
       </div>
 
       <Form>
         <Field label='Type'>
-          <Form.Control as="select" onChange={e => setType(e.target.value)}>
+          <Form.Control as="select" value={type} 
+            onChange={e => setType(e.target.value)}>
             <option>Main Course</option>
             <option>Side</option>
           </Form.Control>
         </Field>
 
         <Field label='Name'>
-          <Form.Control required type="text" onChange={e => setName(e.target.value)}/>
+          <Form.Control required type="text" value={name}
+            onChange={e => setName(e.target.value)}/>
         </Field>
 
         <Field label='Price'>
-          <Form.Control required type="number" onChange={e => setPrice(e.target.value)}/>
+          <Form.Control required type="number" value={price}
+            onChange={e => setPrice(e.target.value)}/>
         </Field>
 
         <Field label='Photo'>
@@ -62,7 +84,7 @@ export default function FormControl(props) {
 
         <Button variant="primary" type="submit" 
           onClick={e => {e.preventDefault(); handleSubmit();}}
-        >Save Item</Button>
+        >{`${action} Item`}</Button>
       </Form>
     </Container>
   );
