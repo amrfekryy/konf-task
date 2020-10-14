@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card'
 import Blank from 'assets/blank.png'
-import useMutator from 'components/mutator'
+import useMutator from 'helpers/mutator'
 import { Link } from '@reach/router';
 
 export default function ItemCard(props) {
