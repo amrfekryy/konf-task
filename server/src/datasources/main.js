@@ -32,7 +32,11 @@ class MainAPI extends DataSource {
     item.name = name
     item.type = type
     item.price = price
+    
+    // delete old photo
+    if (photo && photo != item.photo) this.deletePhoto(item.photo)
     item.photo = photo
+
     await item.save()
 
     return { success: true, item }
@@ -40,31 +44,25 @@ class MainAPI extends DataSource {
 
   async deleteItem({ id }) {
     
-    const item = await this.store.items.findByPk(id)
-
-    // delete photo if any
-    if (item.photo) {
-      const photoName = item.photo.split('/').pop()
-      const pathName = path.join(__dirname, '../../public/photos/', photoName)
-      fs.unlinkSync(pathName);
-    }
-    
+    const item = await this.store.items.findByPk(id)    
+    if (item.photo) this.deletePhoto(item.photo)
     await item.destroy()
     
     return { success: true }
   }
 
-  async uploadFile({ file, itemId }) {
-    const { createReadStream, filename, mimetype, encoding } = await file
-    // console.log({ filename, mimetype, encoding })
+  deletePhoto(photo) {
+    const { base } = path.parse(photo)
+    const pathName = path.join(__dirname, '../../public/photos/', base)
+    try { fs.unlinkSync(pathName) } catch (err) {}
+  }
 
-    const lastCreatedItem = await this.store.items.findAll({
-      limit: 1, order: [['createdAt', 'DESC' ]]
-    })
-    
-    const ID = itemId ? itemId : lastCreatedItem[0].id + 1
-    const extension = filename.split('.').pop()
-    const fileName = `photo${ID}.${extension}`
+  async uploadFile({ file }) {
+    const { createReadStream, filename, mimetype, encoding } = await file
+
+    const { ext } = path.parse(filename)
+    const randomString = Math.random().toString(36).substring(7)
+    const fileName = randomString + ext
     
     const pathName = path.join(__dirname, '../../public/photos/', fileName)
     

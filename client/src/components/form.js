@@ -92,7 +92,7 @@ export default function FormControl(props) {
               onChange={async e => {
                 const file = e.target.files[0]
                 if (!file) alert('No file was selected')
-                else uploadFile({variables: { file, itemId: id }})
+                else uploadFile({variables: { file }})
               }}/>
             Choose Photo
           </label>

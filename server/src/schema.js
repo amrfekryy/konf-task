@@ -41,7 +41,7 @@ const typeDefs = gql`
 
     deleteItem(id: ID!): Response!
 
-    uploadFile(file: Upload! itemId: ID): Response!
+    uploadFile(file: Upload!): Response!
 
   }
   
