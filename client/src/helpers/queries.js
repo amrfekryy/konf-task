@@ -77,8 +77,8 @@ export const DELETE_ITEM = gql`
 `;
 
 export const UPLOAD_FILE = gql`
-  mutation uploadFile($file: Upload!) {
-    uploadFile(file: $file) {
+  mutation uploadFile($file: Upload!, $itemId: ID) {
+    uploadFile(file: $file, itemId: $itemId) {
       success
       photo
     }

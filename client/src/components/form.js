@@ -49,7 +49,7 @@ export default function FormControl(props) {
   const uploadFile = useMutator('uploadFile', setPhoto)
 
   const handleSubmit = () => {
-    alert(JSON.stringify({type, name, price: +price, photo: photo || 'no photo'}))
+    // alert(JSON.stringify({type, name, price: +price, photo: photo || 'no photo'}))
     if (action === 'Update') 
       updateItem({variables: {id, type, name, price: +price, photo}})
     else addItem({variables: {type, name, price: +price, photo}})
@@ -92,7 +92,7 @@ export default function FormControl(props) {
               onChange={async e => {
                 const file = e.target.files[0]
                 if (!file) alert('No file was selected')
-                else uploadFile({variables: { file }})
+                else uploadFile({variables: { file, itemId: id }})
               }}/>
             Choose Photo
           </label>

@@ -1,4 +1,5 @@
-const { ApolloServer } = require('apollo-server');
+const { ApolloServer } = require('apollo-server-express');
+const express = require('express')
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 const MainAPI = require('./datasources/main');
@@ -14,6 +15,10 @@ const server = new ApolloServer({
   }),
 });
 
-server.listen().then(({ url }) => {
-  console.log(`Server ready at ${url}`);
+const app = express()
+server.applyMiddleware({ app })
+app.use(express.static('public'))
+
+app.listen({ port: 4000 }, () => {
+  console.log(`Server ready at http://localhost:4000`);
 });

@@ -21,7 +21,7 @@ export default function useMutator(type, setState) {
       const successfulMutation = response && response.success
       if (successfulMutation) {
         if (type === 'uploadFile') {
-          alert(JSON.stringify(data))
+          // alert(JSON.stringify(data))
           // alert(`file uploaded successfully: ${response.photo}`)
           setState(response.photo)
         } else {

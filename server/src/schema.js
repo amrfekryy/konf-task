@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server');
+const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
 
@@ -41,7 +41,7 @@ const typeDefs = gql`
 
     deleteItem(id: ID!): Response!
 
-    uploadFile(file: Upload!): Response!
+    uploadFile(file: Upload! itemId: ID): Response!
 
   }
   
