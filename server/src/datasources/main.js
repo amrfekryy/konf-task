@@ -1,4 +1,6 @@
 const { DataSource } = require('apollo-datasource');
+const path = require('path')
+const fs = require('fs')
 
 class MainAPI extends DataSource {
   constructor({ store }) {
@@ -42,6 +44,17 @@ class MainAPI extends DataSource {
     
     return { success: true }
   }
+
+  async uploadFile({ file }) {
+    const { createReadStream, filename, mimetype, encoding } = await file
+    
+    const stream = createReadStream()
+    const pathName = path.join(__dirname, '../../photos', filename)
+    await stream.pipe(fs.createWriteStream(pathName))
+
+    return { success: true, photo: filename }
+  }
+
 }
 
 module.exports = MainAPI;

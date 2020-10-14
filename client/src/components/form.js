@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import useMutator from 'components/mutator'
 
+
 const Field = props => (
   <Form.Group as={Row}>
     <Form.Label column sm="2" lg="1">{props.label}</Form.Label>
@@ -17,32 +18,41 @@ const Field = props => (
 
 export default function FormControl(props) {
   
+  // see if item is passed
   const item = 
     props.location && 
     props.location.state &&
     props.location.state.item
     ? props.location.state.item : null
   
+  // determine form action
   const action = item ? 'Update' : 'Add'
-
-  const { id, 
+  
+  // get item data
+  const { 
+    id, 
     type: TYPE='Main Course', 
     name: NAME='', 
     price: PRICE='', 
-    photo } = item || {}
+    photo: PHOTO='' 
+  } = item || {}
 
-  // alert(JSON.stringify(item))
+  // set initial values
   const [type, setType] = useState(TYPE)
   const [name, setName] = useState(NAME)
   const [price, setPrice] = useState(PRICE)
+  const [photo, setPhoto] = useState(PHOTO)
 
+  // get mutators
   const addItem = useMutator('addItem')
   const updateItem = useMutator('updateItem')
+  const uploadFile = useMutator('uploadFile', setPhoto)
 
   const handleSubmit = () => {
-    // alert(JSON.stringify({type, name, price}))
-    if (action === 'Update') updateItem({variables: {id, type, name, price: +price}})
-    else addItem({variables: {type, name, price: +price}})
+    alert(JSON.stringify({type, name, price: +price, photo: photo || 'no photo'}))
+    if (action === 'Update') 
+      updateItem({variables: {id, type, name, price: +price, photo}})
+    else addItem({variables: {type, name, price: +price, photo}})
   }
 
   return (
@@ -57,6 +67,7 @@ export default function FormControl(props) {
       </div>
 
       <Form>
+        
         <Field label='Type'>
           <Form.Control as="select" value={type} 
             onChange={e => setType(e.target.value)}>
@@ -77,7 +88,12 @@ export default function FormControl(props) {
 
         <Field label='Photo'>
           <label className="btn btn-primary">
-            <Form.File className="d-none"/>
+            <input type='file' className="d-none" 
+              onChange={async e => {
+                const file = e.target.files[0]
+                if (!file) alert('No file was selected')
+                else uploadFile({variables: { file }})
+              }}/>
             Choose Photo
           </label>
         </Field>

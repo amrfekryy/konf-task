@@ -10,9 +10,16 @@ const typeDefs = gql`
     photo: String
   }
 
+  # type File {
+  #   filename: String!
+  #   mimetype: String!
+  #   encoding: String!
+  # }
+
   type Query {
     getItems: Response!
     getItem(id: ID!): Response!
+    # uploads: [File]
   }
   
   type Mutation {
@@ -34,6 +41,8 @@ const typeDefs = gql`
 
     deleteItem(id: ID!): Response!
 
+    uploadFile(file: Upload!): Response!
+
   }
   
   type Response {
@@ -41,6 +50,7 @@ const typeDefs = gql`
     resMessage: String
     items: [Item]
     item: Item
+    photo: String
   }
 `;
 

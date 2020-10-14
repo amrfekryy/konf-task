@@ -7,5 +7,6 @@ module.exports = {
     addItem: async (_, args, { dataSources }) => await dataSources.mainAPI.addItem(args),
     updateItem: async (_, args, { dataSources }) => await dataSources.mainAPI.updateItem(args),
     deleteItem: async (_, args, { dataSources }) => await dataSources.mainAPI.deleteItem(args),
+    uploadFile: async (_, args, { dataSources }) => await dataSources.mainAPI.uploadFile(args),
   }
 };

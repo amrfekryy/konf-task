@@ -42,8 +42,8 @@ export const GET_ITEM = gql`
 export const ADD_ITEM = gql`
   ${ITEM_DATA}
 
-  mutation addItem($name: String!, $type: String!, $price: Float!) {
-    addItem(name: $name, type: $type, price: $price) {
+  mutation addItem($name: String!, $type: String!, $price: Float!, $photo: String) {
+    addItem(name: $name, type: $type, price: $price, photo: $photo) {
       success
       resMessage
       item {
@@ -56,8 +56,8 @@ export const ADD_ITEM = gql`
 export const UPDATE_ITEM = gql`
   ${ITEM_DATA}
 
-  mutation updateItem($id: ID!, $name: String!, $type: String!, $price: Float!) {
-    updateItem(id: $id, name: $name, type: $type, price: $price) {
+  mutation updateItem($id: ID!, $name: String!, $type: String!, $price: Float!, $photo: String) {
+    updateItem(id: $id, name: $name, type: $type, price: $price, photo: $photo) {
       success
       resMessage
       item {
@@ -76,3 +76,11 @@ export const DELETE_ITEM = gql`
   }
 `;
 
+export const UPLOAD_FILE = gql`
+  mutation uploadFile($file: Upload!) {
+    uploadFile(file: $file) {
+      success
+      photo
+    }
+  }
+`
