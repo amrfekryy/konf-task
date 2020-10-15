@@ -22,9 +22,23 @@ class MainAPI extends DataSource {
     return { success: true, item }
   }
 
-  async addItem(args) {
-    const item = await this.store.items.create(args)
-    return { success: true, item }
+  async addItem({ type, name, price, photo=null }) {
+    const response = {
+      item: null, 
+      success: false, 
+      resMessage: 'Faild Database Operation'
+    }
+    
+    if (!type || !name || !price) {
+      return { ...response, resMessage: 'Missing required field' }
+    }
+    try {
+      const item = await this.store.items.create({ type, name, price, photo })
+      return { item, success: true, resMessage: 'Successful Database Operation' }
+    } 
+    catch (err) {
+      return { ...response, resMessage: err }
+    }
   }
 
   async updateItem({ id, name, type, price, photo }) {
