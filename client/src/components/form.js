@@ -69,7 +69,7 @@ export default function FormControl(props) {
       <Form>
         
         <Field label='Type'>
-          <Form.Control as="select" value={type} 
+          <Form.Control as="select" defaultValue={type} 
             onChange={e => setType(e.target.value)}>
             <option>Main Course</option>
             <option>Side</option>
@@ -77,12 +77,12 @@ export default function FormControl(props) {
         </Field>
 
         <Field label='Name'>
-          <Form.Control required type="text" value={name}
+          <Form.Control required type="text" defaultValue={name}
             onChange={e => setName(e.target.value)}/>
         </Field>
 
         <Field label='Price'>
-          <Form.Control required type="number" value={price}
+          <Form.Control required type="number" defaultValue={price}
             onChange={e => setPrice(e.target.value)}/>
         </Field>
 
