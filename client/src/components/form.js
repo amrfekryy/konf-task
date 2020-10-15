@@ -42,6 +42,7 @@ export default function FormControl(props) {
   const [name, setName] = useState(NAME)
   const [price, setPrice] = useState(PRICE)
   const [photo, setPhoto] = useState(PHOTO)
+  const [filename, setFilename] = useState('')
 
   // get mutators
   const addItem = useMutator('addItem')
@@ -92,10 +93,13 @@ export default function FormControl(props) {
               onChange={async e => {
                 const file = e.target.files[0]
                 if (!file) alert('No file was selected')
-                else uploadFile({variables: { file }})
+                else {
+                  setFilename(file.name)
+                  uploadFile({variables: { file }})
+                }
               }}/>
             Choose Photo
-          </label>
+          </label><span>{` ${filename}`}</span>
         </Field>
 
         <Button variant="primary" type="submit" 
