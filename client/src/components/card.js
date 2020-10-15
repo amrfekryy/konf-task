@@ -21,7 +21,7 @@ export default function ItemCard(props) {
           justifyContent: 'space-between',
         }}>
           <Card.Subtitle className="mb-2 text-muted">{type}</Card.Subtitle>
-          <Card.Subtitle className="mb-2 text-muted">{price}</Card.Subtitle>
+          <Card.Subtitle className="mb-2 text-muted">{`$${price}`}</Card.Subtitle>
         </div>
         <Card.Title>{name}</Card.Title>
         <div style={{
